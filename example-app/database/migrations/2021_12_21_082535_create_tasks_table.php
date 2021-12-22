@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->char('title',100)->nullable(false);
             $table->text('description')->nullable(false);
-            $table->unsignedInteger('type')->nullable(false);
+            $table->tinyInteger('type')->nullable(false);
             $table->tinyInteger('status')->nullable(false);
             $table->date('start_date')->nullable(false);
             $table->date('due_date')->nullable(false);

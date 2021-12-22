@@ -38,17 +38,13 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        $start_date = date('Y-m-d'); //Fomat Date 
-        $start_date = $request->start_date;
-        $due_date = date('Y-m-d'); 
-        $due_date = $request->due_date;
         DB::table('tasks')->insert([
             'title' => $request->title,
             'description' => $request->description,
             'type' => $request->type,
             'status' => $request->status,
-            'start_date' => $start_date,
-            'due_date' => $due_date,
+            'start_date' => $request->start_date,
+            'due_date' => $request->due_date,
             'assignee' => $request->assignee,
             'estimate' => $request->estimate,
             'actual' => $request->actual,
@@ -89,17 +85,13 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, $id)
     {
-        $start_date = date('Y-m-d'); //Fomat Date 
-        $start_date = $request->start_date;
-        $due_date = date('Y-m-d'); 
-        $due_date = $request->due_date;
         DB::table('tasks')->where('id',$id)->update([
             'title' => $request->title,
             'description' => $request->description,
             'type' => $request->type,
             'status' => $request->status,
-            'start_date' => $start_date,
-            'due_date' => $due_date,
+            'start_date' => $request->start_date,
+            'due_date' => $request->due_date,
             'assignee' => $request->assignee,
             'estimate' => $request->estimate,
             'actual' => $request->actual,
@@ -116,7 +108,7 @@ class TaskController extends Controller
     public function destroy($id)
     {
         DB::table('tasks')->where('id', $id)->delete();
-        return redirect('/tasks')->with('message', 'Delete Successfully');
+        return redirect()->route('tasks.index')->with('message', 'Delete Successfully');
     }
     
 }
