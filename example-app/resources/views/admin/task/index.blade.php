@@ -26,11 +26,11 @@
         <td style="border:1px solid black;">{{$task->estimate}}</td>
         <td style="border:1px solid black;">{{$task->actual}}</td>
         <td style="border:1px solid black; display:flex;justify-content: space-evenly;">
-            <a href="{{route('tasks.show',['task' => $task->id])}}"
+            <a href="{{route('tasks.show', ['task' => $task->id])}}"
                 style="background-color: #4CAF50;border: none;color: white;padding: 10px 20px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;">Show</a>
-            <a href="{{route('tasks.edit',['task' => $task->id])}}"
+            <a href="{{route('tasks.edit', ['task' => $task->id])}}"
                 style="background-color: #4CAF50;border: none;color: white;padding: 10px 20px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;">Edit</a>
-            <form action="{{route('tasks.destroy',['task' => $task->id])}}" method="POST">
+            <form action="{{route('tasks.destroy', ['task' => $task->id])}}" method="POST">
                 @method('DELETE')
                 @csrf
                 <button type="submit"

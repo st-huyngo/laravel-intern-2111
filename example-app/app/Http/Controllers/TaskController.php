@@ -17,7 +17,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = DB::table('tasks')->get();
-        return view('admin.task.index',['tasks' => $tasks]);
+        return view('admin.task.index', ['tasks' => $tasks]);
     }
 
     /**
@@ -27,7 +27,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('admin.task.create');
+        $users = DB::table('users')->get();
+        return view('admin.task.create', ['users' => $users]);
     }
 
     /**
@@ -45,7 +46,7 @@ class TaskController extends Controller
             'status' => $request->status,
             'start_date' => $request->start_date,
             'due_date' => $request->due_date,
-            'assignee' => $request->assignee,
+            'assignee' => $request->input('assignee'),
             'estimate' => $request->estimate,
             'actual' => $request->actual,
         ]);
@@ -61,7 +62,7 @@ class TaskController extends Controller
     public function show($id)
     {
         $task = DB::table('tasks')->find($id);
-        return view('admin.task.show',['task' => $task]);
+        return view('admin.task.show', ['task' => $task]);
     }
 
     /**
@@ -73,7 +74,8 @@ class TaskController extends Controller
     public function edit($id)
     {
         $task = DB::table('tasks')->find($id);
-        return view('admin.task.edit',['task' => $task]);
+        $users = DB::table('users')->get();
+        return view('admin.task.edit', ['task' => $task, 'users' => $users]);
     }
 
     /**
@@ -92,7 +94,7 @@ class TaskController extends Controller
             'status' => $request->status,
             'start_date' => $request->start_date,
             'due_date' => $request->due_date,
-            'assignee' => $request->assignee,
+            'assignee' => $request->input('assignee'),
             'estimate' => $request->estimate,
             'actual' => $request->actual,
         ]);

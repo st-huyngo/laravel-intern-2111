@@ -15,7 +15,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Update Task</h1>
                             </div>
-                            <form class="user" action="{{route('tasks.update',['task'=>$task->id])}}" method="POST">
+                            <form class="user" action="{{route('tasks.update', ['task' => $task->id])}}" method="POST">
                                 @method('PUT')
                                 @csrf
                                 @if(session()->has('message'))
@@ -73,9 +73,14 @@
                                 <span>{{$message}}</span>
                                 @enderror
                                 <div class="form-group">
-                                    <label for="title">assignee</label>
-                                    <input type="text" name="assignee" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task->assignee}}">
+                                    <select name="assignee">
+                                        <option value="0" selected disabled hidden>Choose Assignee</option>
+                                        @foreach($users as $user)
+                                        <option value="{{$user->id}}"
+                                            {{ ( $user->id == $task->assignee ) ? 'selected' : ''}}>
+                                            {{$user->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 @error('assignee')
                                 <span>{{$message}}</span>
@@ -107,8 +112,6 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
 @endsection
