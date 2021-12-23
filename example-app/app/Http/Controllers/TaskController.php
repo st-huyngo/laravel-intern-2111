@@ -18,7 +18,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::getAllTask();
         return view('admin.task.index', ['tasks' => $tasks]);
     }
 
@@ -29,7 +29,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::getAllUser();
         return view('admin.task.create', ['users' => $users]);
     }
 
@@ -41,17 +41,7 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        $task = Task::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'type' => $request->type,
-            'status' => $request->status,
-            'start_date' => $request->start_date,
-            'due_date' => $request->due_date,
-            'assignee' => $request->assignee,
-            'estimate' => $request->estimate,
-            'actual' => $request->actual,
-        ]);
+        Task::createTask($request->all());
         return redirect()->back()->with('message', 'Create Successfully');
     }
 
@@ -63,7 +53,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $task = Task::find($id);
+        $task = Task::getOneTask($id);
         return view('admin.task.show', ['task' => $task]);
     }
 
@@ -75,8 +65,8 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::find($id);
-        $users = Task::all();
+        $task = Task::getOneTask($id);
+        $users = User::getAllUser();
         return view('admin.task.edit', ['task' => $task, 'users' => $users]);
     }
 
@@ -89,18 +79,7 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, $id)
     {
-        $task = Task::find($id);
-
-        $task->title = $request->title;
-        $task->description = $request->description;
-        $task->type = $request->type;
-        $task->status = $request->status;
-        $task->start_date = $request->start_date;
-        $task->due_date = $request->due_date;
-        $task->assignee = $request->assignee;
-        $task->estimate = $request->estimate;
-        $task->actual = $request->actual;
-        $task->save();
+        $task = Task::updateTask($id,$request->all());
         return redirect()->back()->with('message', 'Update Successfully');
     }
 
@@ -112,8 +91,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $task = Task::find($id);
-        $task->delete();
+        Task::deleteTask($id);
         return redirect()->route('tasks.index')->with('message', 'Delete Successfully');
     }
     
