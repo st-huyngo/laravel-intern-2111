@@ -46,7 +46,7 @@ class TaskController extends Controller
             'status' => $request->status,
             'start_date' => $request->start_date,
             'due_date' => $request->due_date,
-            'assignee' => $request->input('assignee'),
+            'assignee' => $request->assignee,
             'estimate' => $request->estimate,
             'actual' => $request->actual,
         ]);
@@ -94,7 +94,7 @@ class TaskController extends Controller
             'status' => $request->status,
             'start_date' => $request->start_date,
             'due_date' => $request->due_date,
-            'assignee' => $request->input('assignee'),
+            'assignee' => $request->assignee,
             'estimate' => $request->estimate,
             'actual' => $request->actual,
         ]);
