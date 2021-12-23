@@ -15,7 +15,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Update Task</h1>
                             </div>
-                            <form class="user" action="{{route('tasks.update',['task'=>$key])}}" method="POST">
+                            <form class="user" action="{{route('tasks.update', ['task' => $task->id])}}" method="POST">
                                 @method('PUT')
                                 @csrf
                                 @if(session()->has('message'))
@@ -26,7 +26,7 @@
                                 <div class="form-group">
                                     <label for="title">Title</label>
                                     <input type="text" name="title" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task['title']}}">
+                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task->title}}">
                                 </div>
                                 @error('title')
                                 <span>{{$message}}</span>
@@ -34,7 +34,7 @@
                                 <div class="form-group">
                                     <label for="title">description</label>
                                     <input type="text" name="description" class="form-control form-control-user"
-                                        id="exampleInputPassword" value="{{$task['description']}}">
+                                        id="exampleInputPassword" value="{{$task->description}}">
                                 </div>
                                 @error('description')
                                 <span>{{$message}}</span>
@@ -42,7 +42,7 @@
                                 <div class="form-group">
                                     <label for="title">type</label>
                                     <input type="text" name="type" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task['type']}}">
+                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task->type}}">
                                 </div>
                                 @error('type')
                                 <span>{{$message}}</span>
@@ -50,7 +50,7 @@
                                 <div class="form-group">
                                     <label for="title">status</label>
                                     <input type="text" name="status" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task['status']}}">
+                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task->status}}">
                                 </div>
                                 @error('status')
                                 <span>{{$message}}</span>
@@ -59,7 +59,7 @@
                                     <label for="title">start_date</label>
                                     <input type="text" name="start_date" class="form-control form-control-user"
                                         id="exampleInputEmail" aria-describedby="emailHelp"
-                                        value="{{$task['start_date']}}">
+                                        value="{{$task->start_date}}">
                                 </div>
                                 @error('start_date')
                                 <span>{{$message}}</span>
@@ -67,17 +67,20 @@
                                 <div class="form-group">
                                     <label for="title">due_date</label>
                                     <input type="text" name="due_date" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp"
-                                        value="{{$task['due_date']}}">
+                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task->due_date}}">
                                 </div>
                                 @error('due_date')
                                 <span>{{$message}}</span>
                                 @enderror
                                 <div class="form-group">
-                                    <label for="title">assignee</label>
-                                    <input type="text" name="assignee" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp"
-                                        value="{{$task['assignee']}}">
+                                    <select name="assignee">
+                                        <option value="" selected disabled hidden>Choose Assignee</option>
+                                        @foreach($users as $user)
+                                        <option value="{{$user->id}}"
+                                            {{ ( $user->id == $task->assignee ) ? 'selected' : ''}}>
+                                            {{$user->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 @error('assignee')
                                 <span>{{$message}}</span>
@@ -85,8 +88,8 @@
                                 <div class="form-group">
                                     <label for="title">estimate</label>
                                     <input type="text" name="estimate" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp"
-                                        value="{{$task['estimate']}}" placeholder="Enter estimate...">
+                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task->estimate}}"
+                                        placeholder="Enter estimate...">
                                 </div>
                                 @error('estimate')
                                 <span>{{$message}}</span>
@@ -94,7 +97,7 @@
                                 <div class="form-group">
                                     <label for="title">actual</label>
                                     <input type="text" name="actual" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task['actual']}}">
+                                        id="exampleInputEmail" aria-describedby="emailHelp" value="{{$task->actual}}">
                                 </div>
                                 @error('actual')
                                 <span>{{$message}}</span>
@@ -109,8 +112,6 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
 @endsection

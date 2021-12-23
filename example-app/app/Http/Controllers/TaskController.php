@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\ServiceProvider;
 use App\Http\Requests\TaskRequest;
+use DB;
 class TaskController extends Controller
 {
     /**
@@ -15,8 +16,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = $this->value();
-        return view('admin.task.index',['tasks' => $tasks]);
+        $tasks = DB::table('tasks')->get();
+        return view('admin.task.index', ['tasks' => $tasks]);
     }
 
     /**
@@ -26,7 +27,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('admin.task.create');
+        $users = DB::table('users')->get();
+        return view('admin.task.create', ['users' => $users]);
     }
 
     /**
@@ -37,6 +39,17 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
+        DB::table('tasks')->insert([
+            'title' => $request->title,
+            'description' => $request->description,
+            'type' => $request->type,
+            'status' => $request->status,
+            'start_date' => $request->start_date,
+            'due_date' => $request->due_date,
+            'assignee' => $request->assignee,
+            'estimate' => $request->estimate,
+            'actual' => $request->actual,
+        ]);
         return redirect()->back()->with('message', 'Create Successfully');
     }
 
@@ -46,10 +59,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($key)
+    public function show($id)
     {
-        $task = $this->handleValue($key);
-        return view('admin.task.show',['task' => $task,'key'=>$key]);
+        $task = DB::table('tasks')->find($id);
+        return view('admin.task.show', ['task' => $task]);
     }
 
     /**
@@ -58,10 +71,11 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($key)
+    public function edit($id)
     {
-        $task = $this->handleValue($key);
-        return view('admin.task.edit',['task' => $task,'key' => $key]);
+        $task = DB::table('tasks')->find($id);
+        $users = DB::table('users')->get();
+        return view('admin.task.edit', ['task' => $task, 'users' => $users]);
     }
 
     /**
@@ -71,8 +85,19 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(TaskRequest $request, $key)
+    public function update(TaskRequest $request, $id)
     {
+        DB::table('tasks')->where('id',$id)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'type' => $request->type,
+            'status' => $request->status,
+            'start_date' => $request->start_date,
+            'due_date' => $request->due_date,
+            'assignee' => $request->assignee,
+            'estimate' => $request->estimate,
+            'actual' => $request->actual,
+        ]);
         return redirect()->back()->with('message', 'Update Successfully');
     }
 
@@ -82,46 +107,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($key)
+    public function destroy($id)
     {
-        return redirect()->back()->with('message', 'Delete Successfully');
+        DB::table('tasks')->where('id', $id)->delete();
+        return redirect()->route('tasks.index')->with('message', 'Delete Successfully');
     }
     
-    public function value()
-    {
-        return [
-            'task1' =>[
-                'title' => 'Task December',
-                'description' =>'Task December',
-                'type' => 'Task',
-                'status' => '1',
-                'start_date' => '1/12/2021',
-                'due_date' => '31/12/2021',
-                'assignee' => 'Minh Dao',
-                'estimate' => '15 days',
-                'actual' => '13 days'
-            ],
-            'task2' =>[
-                'title' => 'Task December 1',
-                'description' =>'Task December 1',
-                'type' => 'Task 1',
-                'status' => '2',
-                'start_date' => '1/12/2021',
-                'due_date' => '31/12/2021',
-                'assignee' => 'Minh Dao',
-                'estimate' => '20 days',
-                'actual' => '19 days'
-            ]
-        ];
-    }
-
-    public function handleValue($key){
-        $value = $this->value();
-        foreach ($value as $k => $v) {
-            if ($key == $k){
-                $task = $value[$k];
-            }
-        }
-        return $task;
-    }
 }
