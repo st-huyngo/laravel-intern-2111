@@ -69,9 +69,6 @@
                                 <span>{{$message}}</span>
                                 @enderror
                                 <div class="form-group">
-                                    <!-- <input type="text" name="assignee" class="form-control form-control-user"
-                                        id="exampleInputEmail" aria-describedby="emailHelp"
-                                        placeholder="Enter assignee..."> -->
                                     <select name="assignee">
                                         <option value="" selected disabled hidden>Choose Assignee</option>
                                         @foreach($users as $user)
