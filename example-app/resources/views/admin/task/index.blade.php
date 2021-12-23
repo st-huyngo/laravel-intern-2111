@@ -1,6 +1,14 @@
 @extends("admin.partials.app")
 @section('content')
-<h1>Tasks</h1>
+<div style="display:flex; justify-content:space-between">
+    <h1>Tasks</h1>
+    <form action="{{route('tasks.findTask')}}" method="POST">
+        @csrf
+        <input type="text" name='type' placeholder="Enter type ... ">
+        <button type="submit"
+            style="background-color: #4CAF50;border: none;color: white;padding: 10px 20px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;">Search</button>
+    </form>
+</div>
 <table style="width:100%;border:1px solid black;">
     <tr>
         <th style="border:1px solid black;">title</th>

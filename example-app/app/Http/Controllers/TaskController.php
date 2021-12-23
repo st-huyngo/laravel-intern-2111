@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\ServiceProvider;
 use App\Http\Requests\TaskRequest;
 use DB;
+use App\Models\Task;
+use App\Models\User;
 class TaskController extends Controller
 {
     /**
@@ -16,7 +18,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = DB::table('tasks')->get();
+        $tasks = Task::all();
         return view('admin.task.index', ['tasks' => $tasks]);
     }
 
@@ -27,7 +29,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $users = DB::table('users')->get();
+        $users = User::all();
         return view('admin.task.create', ['users' => $users]);
     }
 
@@ -39,14 +41,14 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        DB::table('tasks')->insert([
+        $task = Task::create([
             'title' => $request->title,
             'description' => $request->description,
             'type' => $request->type,
             'status' => $request->status,
             'start_date' => $request->start_date,
             'due_date' => $request->due_date,
-            'assignee' => $request->input('assignee'),
+            'assignee' => $request->assignee,
             'estimate' => $request->estimate,
             'actual' => $request->actual,
         ]);
@@ -61,7 +63,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $task = DB::table('tasks')->find($id);
+        $task = Task::find($id);
         return view('admin.task.show', ['task' => $task]);
     }
 
@@ -73,8 +75,8 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = DB::table('tasks')->find($id);
-        $users = DB::table('users')->get();
+        $task = Task::find($id);
+        $users = Task::all();
         return view('admin.task.edit', ['task' => $task, 'users' => $users]);
     }
 
@@ -87,17 +89,18 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, $id)
     {
-        DB::table('tasks')->where('id',$id)->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'type' => $request->type,
-            'status' => $request->status,
-            'start_date' => $request->start_date,
-            'due_date' => $request->due_date,
-            'assignee' => $request->input('assignee'),
-            'estimate' => $request->estimate,
-            'actual' => $request->actual,
-        ]);
+        $task = Task::find($id);
+
+        $task->title = $request->title;
+        $task->description = $request->description;
+        $task->type = $request->type;
+        $task->status = $request->status;
+        $task->start_date = $request->start_date;
+        $task->due_date = $request->due_date;
+        $task->assignee = $request->assignee;
+        $task->estimate = $request->estimate;
+        $task->actual = $request->actual;
+        $task->save();
         return redirect()->back()->with('message', 'Update Successfully');
     }
 
@@ -109,8 +112,14 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('tasks')->where('id', $id)->delete();
+        $task = Task::find($id);
+        $task->delete();
         return redirect()->route('tasks.index')->with('message', 'Delete Successfully');
     }
     
+    public function findTask(Request $request)
+    {
+        $tasks = Task::findType($request->type)->get();
+        return view('admin.task.index', ['tasks' => $tasks]);   
+    }
 }
