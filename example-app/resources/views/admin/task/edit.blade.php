@@ -74,7 +74,7 @@
                                 @enderror
                                 <div class="form-group">
                                     <select name="assignee">
-                                        <option value="0" selected disabled hidden>Choose Assignee</option>
+                                        <option value="" selected disabled hidden>Choose Assignee</option>
                                         @foreach($users as $user)
                                         <option value="{{$user->id}}"
                                             {{ ( $user->id == $task->assignee ) ? 'selected' : ''}}>
