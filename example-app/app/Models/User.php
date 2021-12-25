@@ -48,8 +48,4 @@ class User extends Authenticatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeGetAllUser($query)
-    {
-        return $query->get();
-    }
 }

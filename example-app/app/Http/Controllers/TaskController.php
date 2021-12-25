@@ -18,7 +18,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::getAllTask();
+        $tasks = Task::all();
         return view('admin.task.index', ['tasks' => $tasks]);
     }
 
@@ -29,7 +29,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $users = User::getAllUser();
+        $users = User::all();
         return view('admin.task.create', ['users' => $users]);
     }
 
@@ -41,7 +41,7 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        Task::createTask($request->all());
+        Task::create($request->all());
         return redirect()->back()->with('message', 'Create Successfully');
     }
 
@@ -53,7 +53,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $task = Task::getOneTask($id);
+        $task = Task::findOrFail($id);
         return view('admin.task.show', ['task' => $task]);
     }
 
@@ -65,8 +65,8 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::getOneTask($id);
-        $users = User::getAllUser();
+        $task = Task::findOrFail($id);
+        $users = User::all();
         return view('admin.task.edit', ['task' => $task, 'users' => $users]);
     }
 
@@ -79,7 +79,7 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, $id)
     {
-        $task = Task::updateTask($id,$request->all());
+        $task = Task::findOrFail($id)->update($request->all());
         return redirect()->back()->with('message', 'Update Successfully');
     }
 
@@ -91,7 +91,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        Task::deleteTask($id);
+        Task::findOrFail($id)->delete();
         return redirect()->route('tasks.index')->with('message', 'Delete Successfully');
     }
     
