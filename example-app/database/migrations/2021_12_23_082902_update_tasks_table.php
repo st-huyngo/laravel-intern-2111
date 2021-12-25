@@ -25,6 +25,8 @@ class UpdateTasksTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropColumn('deleted_at');
+        }); 
     }
 }
