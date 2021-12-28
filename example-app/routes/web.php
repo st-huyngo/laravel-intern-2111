@@ -32,6 +32,6 @@ Route::prefix('tasks')->name('tasks.')->group(function(){
 
     Route::delete('/{task}', [TaskController::class, 'destroy'])->name('destroy');
 
-    Route::post('/find', [TaskController::class, 'findTask'])->name('findTask');
+    Route::post('/find', [TaskController::class, 'findTask'])->name('find.task');
      
 });

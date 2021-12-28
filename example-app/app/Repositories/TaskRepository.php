@@ -19,7 +19,7 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function deleteTask($TaskId) 
     {
-        Task::destroy($TaskId);
+        return Task::destroy($TaskId);
     }
 
     public function createTask(array $TaskDetails) 
@@ -29,7 +29,12 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function updateTask($TaskId, array $newDetails) 
     {
-        return Task::find($TaskId)->update($newDetails);
+        return Task::whereId($TaskId)->update($newDetails);
+    }
+
+    public function getTasksByType($taskType)
+    {
+        return  Task::findType($taskType)->get();
     }
     
 }

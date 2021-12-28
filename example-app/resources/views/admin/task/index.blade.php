@@ -2,7 +2,7 @@
 @section('content')
 <div style="display:flex; justify-content:space-between">
     <h1>Tasks</h1>
-    <form action="{{route('tasks.findTask')}}" method="POST">
+    <form action="{{route('tasks.find.task')}}" method="POST">
         @csrf
         <input type="text" name='type' placeholder="Enter type ... ">
         <button type="submit"

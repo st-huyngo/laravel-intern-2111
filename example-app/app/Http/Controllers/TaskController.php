@@ -7,15 +7,13 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\ServiceProvider;
 use App\Http\Requests\TaskRequest;
 use DB;
-use App\Models\Task;
-use App\Models\User;
 use App\Interfaces\TaskRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 
 class TaskController extends Controller
 {
-    private TaskRepositoryInterface $taskRepository;
-    private UserRepositoryInterface $userRepository;
+    private $taskRepository;
+    private $userRepository;
 
     public function __construct(TaskRepositoryInterface $taskRepository,UserRepositoryInterface $userRepository) 
     {
@@ -109,7 +107,7 @@ class TaskController extends Controller
     
     public function findTask(Request $request)
     {
-        $tasks = Task::findType($request->type)->get();
+        $tasks = $this->taskRepository->getTasksByType($request->type);
         return view('admin.task.index', ['tasks' => $tasks]);   
     }
 }
