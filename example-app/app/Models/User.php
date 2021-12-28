@@ -48,4 +48,9 @@ class User extends Authenticatable
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class,'assignee');
+    }
 }
