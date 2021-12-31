@@ -12,7 +12,7 @@
         <th style="border:1px solid black;">Title</th>
         <th style="border:1px solid black;">Description</th>
     </tr>
-    @foreach($tasks as $task)
+    @foreach($user->tasks as $task)
     <tr>
         <td style="border:1px solid black;">{{$task->id}}</td>
         <td style="border:1px solid black;">{{$task->title}}</td>

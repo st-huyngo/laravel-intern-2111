@@ -9,23 +9,41 @@ use App\Interfaces\TaskRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 class UserController extends Controller
 {
+    
     private $userRepository;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \App\Interfaces\UserRepositoryInterface;
+     * @return void
+     */
     public function __construct(UserRepositoryInterface $userRepository) 
     {
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {   
-        $users = UserResource::collection($this->userRepository->getAllUsers());
+        $users = $this->userRepository->getAllUsers();
         return view('admin.user.index', ['users' => $users]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
-        $user = new UserResource($this->userRepository->getUserById($id));
-        $tasks = TaskResource::collection($user->tasks);
-        return view('admin.user.show', ['user' => $user, 'tasks' => $tasks]);
+        $user = $this->userRepository->getUserById($id);
+        return view('admin.user.show', ['user' => $user]);
     }
+    
 }

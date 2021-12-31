@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,18 +12,28 @@ class UserController extends Controller
 {
     private $userRepository;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \App\Interfaces\UserRepositoryInterface;
+     * @return void
+     */
     public function __construct(UserRepositoryInterface $userRepository) 
     {
         $this->userRepository = $userRepository;
     }
 
-    public function getTaskByUserId($id)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getTasksBelongToUserId($id)
     {
         $user = new UserResource($this->userRepository->getUserById($id));
-        $tasks = TaskResource::collection($user->tasks);
         return [
-            'user' => $user,
-            'tasks' => $tasks
+            'user' => $user
         ];
     }
 }

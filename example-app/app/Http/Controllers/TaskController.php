@@ -12,9 +12,17 @@ use App\Interfaces\UserRepositoryInterface;
 
 class TaskController extends Controller
 {
+
     private $taskRepository;
     private $userRepository;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \App\Interfaces\UserRepositoryInterface;
+     * @param  \App\Interfaces\TaskRepositoryInterface;
+     * @return void
+     */
     public function __construct(TaskRepositoryInterface $taskRepository,UserRepositoryInterface $userRepository) 
     {
         $this->taskRepository = $taskRepository;
