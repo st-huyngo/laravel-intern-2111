@@ -13,6 +13,11 @@ class Task extends Model
 
     protected $fillable=['title', 'description', 'type', 'status', 'start_date', 'due_date', 'assignee', 'estimate', 'actual'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'assignee');
+    }
+
     public function getTypeAttribute($value)
     {
         return [
