@@ -7,8 +7,20 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\ServiceProvider;
 use App\Http\Requests\TaskRequest;
 use DB;
+use App\Interfaces\TaskRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
+
 class TaskController extends Controller
 {
+    private $taskRepository;
+    private $userRepository;
+
+    public function __construct(TaskRepositoryInterface $taskRepository,UserRepositoryInterface $userRepository) 
+    {
+        $this->taskRepository = $taskRepository;
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +28,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = DB::table('tasks')->get();
+        $tasks = $this->taskRepository->getAllTasks();
         return view('admin.task.index', ['tasks' => $tasks]);
     }
 
@@ -27,7 +39,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $users = DB::table('users')->get();
+        $users = $this->userRepository->getAllUsers();
         return view('admin.task.create', ['users' => $users]);
     }
 
@@ -39,17 +51,7 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        DB::table('tasks')->insert([
-            'title' => $request->title,
-            'description' => $request->description,
-            'type' => $request->type,
-            'status' => $request->status,
-            'start_date' => $request->start_date,
-            'due_date' => $request->due_date,
-            'assignee' => $request->assignee,
-            'estimate' => $request->estimate,
-            'actual' => $request->actual,
-        ]);
+        $this->taskRepository->createTask($request->validated());
         return redirect()->back()->with('message', 'Create Successfully');
     }
 
@@ -61,7 +63,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        $task = DB::table('tasks')->find($id);
+        $task = $this->taskRepository->getTaskById($id);
         return view('admin.task.show', ['task' => $task]);
     }
 
@@ -73,8 +75,8 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = DB::table('tasks')->find($id);
-        $users = DB::table('users')->get();
+        $task = $this->taskRepository->getTaskById($id);
+        $users = $this->userRepository->getAllUsers();
         return view('admin.task.edit', ['task' => $task, 'users' => $users]);
     }
 
@@ -87,17 +89,7 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, $id)
     {
-        DB::table('tasks')->where('id',$id)->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'type' => $request->type,
-            'status' => $request->status,
-            'start_date' => $request->start_date,
-            'due_date' => $request->due_date,
-            'assignee' => $request->assignee,
-            'estimate' => $request->estimate,
-            'actual' => $request->actual,
-        ]);
+        $this->taskRepository->updateTask($id, $request->validated());
         return redirect()->back()->with('message', 'Update Successfully');
     }
 
@@ -109,8 +101,13 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('tasks')->where('id', $id)->delete();
+        $this->taskRepository->deleteTask($id);
         return redirect()->route('tasks.index')->with('message', 'Delete Successfully');
     }
     
+    public function findTask(Request $request)
+    {
+        $tasks = $this->taskRepository->getTasksByType($request->type);
+        return view('admin.task.index', ['tasks' => $tasks]);   
+    }
 }
