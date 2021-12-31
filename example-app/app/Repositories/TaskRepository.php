@@ -12,24 +12,24 @@ class TaskRepository implements TaskRepositoryInterface
         return Task::all();
     }
 
-    public function getTaskById($TaskId) 
+    public function getTaskById($taskId) 
     {
-        return Task::findOrFail($TaskId);
+        return Task::findOrFail($taskId);
     }
 
-    public function deleteTask($TaskId) 
+    public function deleteTask($taskId) 
     {
-        return Task::destroy($TaskId);
+        return Task::destroy($taskId);
     }
 
-    public function createTask(array $TaskDetails) 
+    public function createTask(array $taskDetails) 
     {
-        return Task::create($TaskDetails);
+        return Task::create($taskDetails);
     }
 
-    public function updateTask($TaskId, array $newDetails) 
+    public function updateTask($taskId, array $newDetails) 
     {
-        return Task::whereId($TaskId)->update($newDetails);
+        return Task::whereId($taskId)->update($newDetails);
     }
 
     public function getTasksByType($taskType)
